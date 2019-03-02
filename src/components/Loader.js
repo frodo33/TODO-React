@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
 const fazer1 = keyframes`
     0% {
@@ -268,39 +268,30 @@ const LongFazers = styled.div`
     }
 `;
 
-
-
-class Loader extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-
-    render() {
-        return (
-            <>
-                <Animation>
+const Loader = () => {
+    return (
+        <>
+            <Animation>
                     <span>
                         <span></span>
                         <span></span>
                         <span></span>
                         <span></span>
                     </span>
-                    <Base>
-                        <span></span>
-                        <Face></Face>
-                    </Base>
-                </Animation>
-                <LongFazers>
+                <Base>
                     <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </LongFazers>
-                <H1>Redirecting</H1>
-            </>
-        )
-    }
+                    <Face></Face>
+                </Base>
+            </Animation>
+            <LongFazers>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </LongFazers>
+            <H1>Redirecting</H1>
+        </>
+    )
 }
 
 export default Loader;

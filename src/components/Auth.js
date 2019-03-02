@@ -16,6 +16,7 @@ const Container = styled.div`
 const FormBox = styled.div`
     width: 500px;
     background: #fff;
+    margin: 0 10px;
 `;
 
 const TitleBox = styled.div`
@@ -42,8 +43,7 @@ class Auth extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            switchForm: true,
-            user: false
+            switchForm: true
         }
     }
 

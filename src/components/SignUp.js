@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import {ReactComponent as UserIcon} from "../assets/user.svg";
-import {ReactComponent as EmailIcon} from "../assets/envelope-regular.svg";
-import {ReactComponent as PassIcon} from "../assets/lock-solid.svg";
+import { ReactComponent as UserIcon } from "../assets/user.svg";
+import { ReactComponent as EmailIcon } from "../assets/envelope-regular.svg";
+import { ReactComponent as PassIcon } from "../assets/lock-solid.svg";
 import firebase from 'firebase';
 
 const Form = styled.form`
@@ -65,8 +65,13 @@ const SignUpButton = styled.button`
     cursor: pointer;
 `;
 
+const Error = styled.p`
+    width: 90%;
+    font-size: 14px;
+`;
 
-class SignUp extends React.Component {
+
+class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -85,10 +90,20 @@ class SignUp extends React.Component {
         })
     }
 
-    firebaseCreateAcc = (email, pass) => {
+    firebaseCreateAcc = (name, email, pass) => {
         firebase.auth().createUserWithEmailAndPassword(email, pass)
             .then(()=>{
-                window.location.pathname = '/';
+                const userId = firebase.auth().currentUser.uid;
+                firebase.database().ref(`users/${userId}`).set({
+                    name: name,
+                    email: email
+                }, (error) => {
+                    if (error) {
+
+                    } else {
+
+                    }
+                });
             })
             .catch((error) => {
                 this.setState({
@@ -103,13 +118,12 @@ class SignUp extends React.Component {
         const {name, email, password} = this.state;
 
         if(name && email && password !== '') {
-            this.firebaseCreateAcc(email, password);
+            this.firebaseCreateAcc(name, email, password);
         }
 
     }
 
     render() {
-
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Fieldset>
@@ -124,7 +138,7 @@ class SignUp extends React.Component {
                     <Label htmlFor="password"><PassIcon/></Label>
                     <Input onChange={this.handleInputChange} type="password" id='password' placeholder='Password'/>
                 </Fieldset>
-                {this.state.error !== '' && <p>{this.state.error}</p>}
+                {this.state.error !== '' && <Error>{this.state.error}</Error>}
                 <SignUpButton type='submit'>Create account</SignUpButton>
             </Form>
         )

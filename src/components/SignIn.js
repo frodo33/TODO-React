@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import {ReactComponent as EmailIcon} from "../assets/envelope-regular.svg";
 import {ReactComponent as PassIcon} from "../assets/lock-solid.svg";
@@ -64,15 +64,19 @@ const SignUpButton = styled.button`
     cursor: pointer;
 `;
 
-class SignIn extends React.Component {
+const Error = styled.p`
+    width: 90%;
+    font-size: 14px;
+`;
+
+class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
             password: '',
             error: '',
-            success: false,
-            user: firebase.auth().currentUser
+            success: false
         }
     }
 
@@ -84,20 +88,13 @@ class SignIn extends React.Component {
 
     logIn = (email, password) => {
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((res)=>{
-                console.log('success');
-                // window.location.pathname = '/';
-                // return <Redirect exact to='/dashboard' />;
-
+            .then(()=>{
                 this.setState({
-                    success: true,
-                    user: res.user
+                    success: true
                 })
 
-                // return <Redirect exact to='/' />
             })
             .catch((error) => {
-                console.log(error.message);
                 this.setState({
                     error: error.message
                 })
@@ -107,25 +104,13 @@ class SignIn extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         const {email, password} = this.state;
-        this.logIn(email, password);
-        // if(email && password !== '') {
-        //     this.logIn(email, password);
-        // }
-    }
-
-    handleLogout = () => {
-        firebase.auth().signOut()
-            .then(() => {
-            console.log('wylogowalo');
-            console.log(this.state.user);
-        }).catch((error) => {
-            console.log('chuj nie wylogowalo', error);
-        });
+        if(email && password !== '') {
+            this.logIn(email, password);
+        }
     }
 
     render() {
         if (this.state.success === true) {
-            console.log(firebase.auth().currentUser);
             return <Redirect to='/dashboard' />
         } else {
             return (
@@ -138,13 +123,8 @@ class SignIn extends React.Component {
                         <Label htmlFor="password"><PassIcon/></Label>
                         <Input onChange={this.handleInputChange} type="password" id='password' placeholder='Password'/>
                     </Fieldset>
-                    {this.state.error !== '' && <p>{this.state.error}</p>}
+                    {this.state.error !== '' && <Error>{this.state.error}</Error>}
                     <SignUpButton>Login</SignUpButton>
-                    <div onClick={this.handleLogout}>logout</div>
-                    <div onClick={()=> {
-                        this.setState({user: firebase.auth().currentUser});
-                        console.log(this.state.user)}
-                    }>asdfasdfasdf</div>
                 </Form>
             )
         }
