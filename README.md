@@ -1,4 +1,4 @@
-#ToDo React
+# ToDo React
 
 Simple app created in React/firebase.
 
