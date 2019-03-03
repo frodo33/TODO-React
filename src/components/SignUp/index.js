@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as UserIcon } from "../assets/user.svg";
-import { ReactComponent as EmailIcon } from "../assets/envelope-regular.svg";
-import { ReactComponent as PassIcon } from "../assets/lock-solid.svg";
+import { ReactComponent as UserIcon } from "../../assets/user.svg";
+import { ReactComponent as EmailIcon } from "../../assets/envelope-regular.svg";
+import { ReactComponent as PassIcon } from "../../assets/lock-solid.svg";
 import firebase from 'firebase';
 
 const Form = styled.form`
@@ -48,6 +48,7 @@ const Label = styled.label`
     width: 25px;
     padding: 0 20px;
     color: coral;
+    cursor: pointer;
 `;
 
 
@@ -63,6 +64,19 @@ const SignUpButton = styled.button`
     font-weight: 600;
     font-family: Montserrat;
     cursor: pointer;
+    
+    &:hover {
+        background: coral;
+    }
+    
+    &:active {
+        transform: scale(1.05);
+    }
+    
+    &:focus {
+        outline: none;
+        background: coral;
+    }
 `;
 
 const Error = styled.p`
@@ -71,7 +85,7 @@ const Error = styled.p`
 `;
 
 
-class SignUp extends Component {
+class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -97,13 +111,7 @@ class SignUp extends Component {
                 firebase.database().ref(`users/${userId}`).set({
                     name: name,
                     email: email
-                }, (error) => {
-                    if (error) {
-
-                    } else {
-
-                    }
-                });
+                }, (error) => {console.log(error)});
             })
             .catch((error) => {
                 this.setState({
@@ -114,13 +122,9 @@ class SignUp extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-
         const {name, email, password} = this.state;
 
-        if(name && email && password !== '') {
-            this.firebaseCreateAcc(name, email, password);
-        }
-
+        (name && email && password !== '') && this.firebaseCreateAcc(name, email, password);
     }
 
     render() {
@@ -145,4 +149,4 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;
+export default Index;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import SignUp from './SignUp';
-import SignIn from './SignIn';
+import SignUp from '../SignUp/index';
+import SignIn from '../SignIn/index';
 
 
 const Container = styled.div`
@@ -17,12 +17,14 @@ const FormBox = styled.div`
     width: 500px;
     background: #fff;
     margin: 0 10px;
+    border-radius: 5px;
 `;
 
 const TitleBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 30px;
 `;
 
 const SignInTitle = styled.h2`
@@ -32,14 +34,16 @@ const SignInTitle = styled.h2`
     text-align: center;
     font-size: 20px;
     background: ${props => props.backgroundColor ? 'white' : 'lightgrey'}
+    border-top-left-radius: 5px;
 `;
 
 const SignUpTitle = styled(SignInTitle)`
     background: ${props => props.backgroundColor ? 'lightgrey' : 'white'}
+    border-top-right-radius: 5px;
 `;
 
 
-class Auth extends Component {
+class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,14 +52,10 @@ class Auth extends Component {
     }
 
     handleSwitchToSignIn = () => {
-        this.setState({
-            switchForm: true
-        })
+        this.setState({switchForm: true})
     };
     handleSwitchToSignUp = () => {
-        this.setState({
-            switchForm: false
-        })
+        this.setState({switchForm: false})
     }
 
     render() {
@@ -66,11 +66,11 @@ class Auth extends Component {
                         <SignInTitle backgroundColor={this.state.switchForm} onClick={this.handleSwitchToSignIn}>Sign In</SignInTitle>
                         <SignUpTitle backgroundColor={this.state.switchForm} onClick={this.handleSwitchToSignUp}>New account</SignUpTitle>
                     </TitleBox>
-                    {this.state.switchForm ? <SignIn/> : <SignUp />}
+                    {this.state.switchForm ? <SignIn /> : <SignUp />}
                 </FormBox>
             </Container>
         )
     }
 }
 
-export default Auth;
+export default Index;

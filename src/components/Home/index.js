@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import styled from 'styled-components';
-import Task from './Task';
-import AddTask from './AddTask';
+import Task from '../Task/index';
+import AddTask from '../AddTask/index';
 
 const Container = styled.div`
     max-width: 1300px;
@@ -21,15 +21,29 @@ const Header = styled.div`
     position: relative;
 `;
 
-const LogOut = styled.p`
+const LogOut = styled.button`
     position: absolute;
     right: 20px;
     top: 10px;
     text-transform: uppercase;
     transition: .4s;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
     
     &:hover {
         color: #fff;
+    }
+    
+    &:focus {
+        outline: none;
+        color: white;               
+    }
+    
+    &:active {
+        transform: scale(1.05);
     }
     
     @media (max-width: 450px) {
@@ -37,17 +51,9 @@ const LogOut = styled.p`
     }
 `;
 
-const Title = styled.h1`
-   
-`;
-
 const Controls = styled.div`
     display: flex;
     justify-content: space-between;
-`;
-
-const DeleteControls = styled.div`
-
 `;
 
 const Button = styled.button`
@@ -63,6 +69,15 @@ const Button = styled.button`
         background: coral;
     }
     
+    &:focus {
+        outline: none;
+        color: white;               
+    }
+    
+    &:active {
+        transform: scale(1.05);
+    }
+    
     @media (max-width: 400px) {
         font-size: 10px;
         padding: 10px 10px;
@@ -70,7 +85,7 @@ const Button = styled.button`
     }
 `;
 
-class Home extends Component {
+class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -80,21 +95,11 @@ class Home extends Component {
         }
     }
 
-    handleShowAddModal = () => {
-        this.setState({
-            showModal: true
-        })
-    };
+    handleShowAddModal = () => this.setState({showModal: true});
 
-    handleHideAddModal = () => {
-        this.setState({
-            showModal: false
-        })
-    };
+    handleHideAddModal = () => this.setState({showModal: false});
 
-    handleLogout = () => {
-        firebase.auth().signOut();
-    }
+    handleLogout = () => firebase.auth().signOut();
 
     refreshData = () => {
         const userId = firebase.auth().currentUser.uid;
@@ -115,11 +120,7 @@ class Home extends Component {
                 tasks: this.state.tasks
 
             }, (error) => {
-                if (error) {
-
-                } else {
-                    this.refreshData();
-                }
+                !error && this.refreshData();
             });
         }
     };
@@ -130,10 +131,7 @@ class Home extends Component {
             tasks: null
 
         }, (error) => {
-            if (error) {
-            } else {
-                this.refreshData();
-            }
+            !error && this.refreshData();
         });
     };
 
@@ -141,22 +139,34 @@ class Home extends Component {
         this.refreshData();
     };
 
+    handleRemoveCurrent = (index) => {
+        this.state.tasks.splice(index, 1);
+
+        const userId = firebase.auth().currentUser.uid;
+        firebase.database().ref(`users/${userId}`).update({
+            tasks: this.state.tasks
+
+        }, (error) => {
+            !error && this.refreshData();
+        });
+    };
+
     render() {
-        const tasks = this.state.tasks !== undefined && this.state.tasks.map((el, i) => <Task data={el} key={i} index={i} />);
+        const tasks = this.state.tasks !== undefined && this.state.tasks.map((el, i) => <Task removeCurrent={this.handleRemoveCurrent} data={el} key={i} index={i} />);
 
         return (
             <Container>
                 <Header>
                     <LogOut onClick={this.handleLogout}>Log out</LogOut>
-                    <Title>TO DO LIST</Title>
+                    <h1>TO DO LIST</h1>
                 </Header>
                 <Controls>
                     <Button onClick={this.handleShowAddModal}>ADD NEW ONE</Button>
                     {this.state.showModal && <AddTask refreshData={this.refreshData} hideModal={this.handleHideAddModal} />}
-                    <DeleteControls>
+                    <div>
                         <Button onClick={this.handleRemoveLast}>DELETE LAST</Button>
                         <Button onClick={this.handleRemoveAll}>DELETE ALL</Button>
-                    </DeleteControls>
+                    </div>
                 </Controls>
                 {tasks}
             </Container>
@@ -164,4 +174,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default Index;

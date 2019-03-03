@@ -1,4 +1,6 @@
-import React from 'react';
+// bez przycisku edit mozna zrobic stateless
+
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 const TaskElement = styled.div`
@@ -24,8 +26,10 @@ const Title = styled.h2`
     font: 700 20px;
     margin: 10px 0;
 `;
+
 const Description = styled.p`
     margin: 0;
+    font-size: 14px;
 `;
 
 const Controls = styled.div`
@@ -66,6 +70,10 @@ const Button = styled.button`
 
 const Task = (props) => {
 
+    const removeCurrent = () => {
+        props.removeCurrent(props.index);
+    };
+
     return (
         <TaskElement>
             <Content>
@@ -74,8 +82,7 @@ const Task = (props) => {
                 <p>Task number: {props.index + 1}</p>
             </Content>
             <Controls>
-                <Button>Edit</Button>
-                <Button>X</Button>
+                <Button onClick={removeCurrent}>X</Button>
             </Controls>
         </TaskElement>
     )

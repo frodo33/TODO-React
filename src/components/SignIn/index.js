@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
-import {ReactComponent as EmailIcon} from "../assets/envelope-regular.svg";
-import {ReactComponent as PassIcon} from "../assets/lock-solid.svg";
+import {ReactComponent as EmailIcon} from "../../assets/envelope-regular.svg";
+import {ReactComponent as PassIcon} from "../../assets/lock-solid.svg";
 import styled from "styled-components";
 import firebase from 'firebase';
 
@@ -47,6 +47,7 @@ const Label = styled.label`
     width: 25px;
     padding: 0 20px;
     color: coral;
+    cursor: pointer;
 `;
 
 
@@ -54,7 +55,7 @@ const SignUpButton = styled.button`
     width: 90%;
     height: 50px;
     margin: 30px 0;
-    background: coral;
+    background: darksalmon;
     color: white;
     border: none;
     border-radius: 10px;
@@ -62,6 +63,19 @@ const SignUpButton = styled.button`
     font-weight: 600;
     font-family: Montserrat;
     cursor: pointer;
+    
+    &:hover {
+        background: coral;
+    }
+    
+    &:active {
+        transform: scale(1.05);
+    }
+    
+    &:focus {
+        outline: none;
+        background: coral;
+    }
 `;
 
 const Error = styled.p`
@@ -69,7 +83,7 @@ const Error = styled.p`
     font-size: 14px;
 `;
 
-class SignIn extends Component {
+class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -92,7 +106,6 @@ class SignIn extends Component {
                 this.setState({
                     success: true
                 })
-
             })
             .catch((error) => {
                 this.setState({
@@ -104,9 +117,7 @@ class SignIn extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         const {email, password} = this.state;
-        if(email && password !== '') {
-            this.logIn(email, password);
-        }
+        (email && password !== '') && this.logIn(email, password);
     }
 
     render() {
@@ -132,4 +143,4 @@ class SignIn extends Component {
     }
 }
 
-export default SignIn;
+export default Index;

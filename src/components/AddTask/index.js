@@ -49,25 +49,46 @@ const ConfirmBtn = styled.button`
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
     
     &:hover {
         background: coral;
     }
+    
+    &:active {
+        transform: scale(1.05);
+    }
+    
+    &:focus {
+        outline: none;
+        color: white;               
+    }
 `;
+
 const CancelBtn = styled.button`
     width: 40%;
     background: darksalmon;
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
     
     &:hover {
         background: coral;
     }
+    
+    &:active {
+        transform: scale(1.05);
+    }
+    
+    &:focus {
+        outline: none;
+        color: white;               
+    }
 `;
 
 
-class AddTask extends Component {
+class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -128,4 +149,4 @@ class AddTask extends Component {
     }
 }
 
-export default AddTask;
+export default Index;

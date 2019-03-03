@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import firebase from 'firebase';
 
-import Loader from './components/Loader';
-import Auth from './components/Auth';
-import Home from './components/Home';
+import Loader from './components/Loader/index';
+import Auth from './components/Auth/index';
+import Home from './components/Home/index';
 
 import { createGlobalStyle } from 'styled-components';
 
@@ -32,15 +32,7 @@ class App extends Component {
 
     componentWillMount() {
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                this.setState({
-                    user: user
-                })
-            } else {
-                this.setState({
-                    user: null
-                })
-            }
+            user ? this.setState({user: user}) : this.setState({user: null});
         });
     }
 

@@ -268,7 +268,7 @@ const LongFazers = styled.div`
     }
 `;
 
-const Loader = () => {
+const Index = () => {
     return (
         <>
             <Animation>
@@ -294,4 +294,4 @@ const Loader = () => {
     )
 }
 
-export default Loader;
+export default Index;
